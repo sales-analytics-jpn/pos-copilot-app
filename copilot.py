@@ -34,7 +34,7 @@ DEFAULT_MODEL = "gpt-6.1-terra" # "gpt-5.6-luna"
 # reasoning_effort="none" が必要（そうしないと 400 invalid_request_error になる）。
 # reasoning_effort に対応しないモデル（gpt-4o など）では、下の _create() が自動で外して呼び直す。
 DEFAULT_REASONING_EFFORT = os.environ.get("POS_COPILOT_REASONING_EFFORT", "none")
-MAX_TOOL_CALLS = 4             # 1回の質問で許可するツール呼出しの上限
+MAX_TOOL_CALLS = 10            # 1回の質問で許可するツール呼出しの上限
 MAX_TABLE_ROWS_TO_AI = 25      # 生成AIに渡す表の最大行数（数値の正本はPython側に残る）
 
 # ---------------------------------------------------------------------------
