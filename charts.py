@@ -15,12 +15,17 @@ COLORS = {"A": "#1f77b4", "B": "#7fb3d5", "C": "#c9d6df", "main": "#1f77b4", "su
 
 
 def setup_japanese_font() -> str:
-    """日本語フォントを設定する。japanize-matplotlib があればそれを使い、なければ環境内のCJKフォントを探す"""
-    try:
-        import japanize_matplotlib  # noqa: F401
-        return "japanize-matplotlib"
-    except Exception:
-        pass
+    """日本語フォントを設定する。
+    1. matplotlib-fontja（IPAexゴシックを同梱。Python 3.12 以降でも動く。Streamlit Community Cloud はこれを使う）
+    2. japanize-matplotlib（講座の conda 環境。Python 3.12 以降では setuptools がないと import できない）
+    3. 環境に入っているCJKフォント
+    """
+    for mod in ("matplotlib_fontja", "japanize_matplotlib"):
+        try:
+            __import__(mod)
+            return mod
+        except Exception:
+            pass
     candidates = ["Noto Sans CJK JP", "Noto Sans JP", "IPAexGothic", "IPAGothic", "Meiryo", "Yu Gothic", "MS Gothic",
                   "Hiragino Sans", "Noto Sans CJK SC", "Noto Sans CJK TC"]
     available = {f.name for f in font_manager.fontManager.ttflist}
@@ -29,7 +34,7 @@ def setup_japanese_font() -> str:
             matplotlib.rcParams["font.family"] = c
             matplotlib.rcParams["axes.unicode_minus"] = False
             return c
-    return "(日本語フォントが見つかりません。pip install japanize-matplotlib を実行してください)"
+    return "(日本語フォントが見つかりません。pip install matplotlib-fontja を実行してください)"
 
 
 setup_japanese_font()
